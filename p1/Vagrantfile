@@ -1,0 +1,32 @@
+
+Vagrant.configure(2) do |config|
+    config.vm.box = "bento/ubuntu-24.04"
+    config.vm.box_version = "202510.26.0"
+    config.vm.box_url = "https://vagrantcloud.com/bento/ubuntu-24.04"
+
+    config.vm.define "naankourS" do |control|
+        control.vm.hostname = "naankourS"
+        control.vm.network "private_network", ip: "192.168.56.110"
+        control.vm.provider "virtualbox" do |v|
+            v.customize ["modifyvm", :id, "--name", "naankourS"]
+            v.memory = 1024
+            v.cpus = 1
+        end
+        # control.vm.provision "shell", inline: <<-SHELL
+        # SHELL
+        control.vm.provision "shell", path: "scripts/server.sh"
+    end
+
+    config.vm.define "naankourSW" do |control|
+        control.vm.hostname = "naankourSW"
+        control.vm.network "private_network", ip: "192.168.56.111"
+        control.vm.provider "virtualbox" do |v|
+            v.customize ["modifyvm", :id, "--name", "naankourSW"]
+            v.memory = 1024
+            v.cpus = 1
+        end
+        # control.vm.provision "shell", inline: <<-SHELL
+        # SHELL
+        control.vm.provision "shell", path: "scripts/agent.sh"
+    end
+end
